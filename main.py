@@ -16,11 +16,11 @@ __________        .__                 _________ .__       .__
 """
 
 COMMANDS = [
-    "-l    - Log in to your account",
-    "-s    - Send an encrypted message",
-    "-r    - Read your messages",
-    "-lo   - Log out of the session",
-    "-h     - Show this help message"
+    "/l    - Log in to your account",
+    "/s    - Send an encrypted message",
+    "/r    - Read your messages",
+    "/lo   - Log out of the session",
+    "/h     - Show this help message"
 ]
 
 def show_help():
@@ -36,14 +36,14 @@ def main():
         show_help()
         while True:
             cmd = input("primecipher> ").strip()
-            if cmd == "-s":
+            if cmd == "/s":
                 messaging.send_message()
-            elif cmd == "-r":
+            elif cmd == "/r":
                 messaging.read_messages()
-            elif cmd == "-lo":
+            elif cmd == "/lo":
                 print("Logging out...")
                 break
-            elif cmd == "-h":
+            elif cmd == "/h":
                 show_help()
             elif cmd == "":
                 continue
