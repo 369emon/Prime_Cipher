@@ -6,7 +6,7 @@ CORS(app)
 
 messages = []
 
-@app.route('/send', methods=['POST'])
+@app.route('-s', methods=['POST'])
 def send_message():
     data = request.get_json()
     msg = data.get('message')

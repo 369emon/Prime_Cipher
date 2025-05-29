@@ -2,22 +2,25 @@ import auth
 import messaging
 
 BANNER = r"""
-   ____       _                 ____ _     _       _           
-  |  _ \ _ __(_)_   _____ _ __ / ___| |__ (_)_ __ | |__  _   _ 
-  | |_) | '__| \ \ / / _ \ '__| |   | '_ \| | '_ \| '_ \| | | |
-  |  __/| |  | |\ V /  __/ |  | |___| | | | | |_) | | | | |_| |
-  |_|   |_|  |_| \_/ \___|_|   \____|_| |_|_| .__/|_| |_|\__, |
-                                            |_|          |___/ 
+   
+__________        .__                 _________ .__       .__                  
+\______   \_______|__| _____   ____   \_   ___ \|__|_____ |  |__   ___________ 
+ |     ___/\_  __ \  |/     \_/ __ \  /    \  \/|  \____ \|  |  \_/ __ \_  __ \
+ |    |     |  | \/  |  Y Y  \  ___/  \     \___|  |  |_> >   Y  \  ___/|  | \/
+ |____|     |__|  |__|__|_|  /\___  >  \______  /__|   __/|___|  /\___  >__|   
+                           \/     \/          \/   |__|        \/     \/       
+    
+  
 ---------------------------------------------------------------
         Secure Terminal Messaging - PrimeCipher
 """
 
 COMMANDS = [
-    "/login    - Log in to your account",
-    "/send     - Send an encrypted message",
-    "/read     - Read your messages",
-    "/logout   - Log out of the session",
-    "/help     - Show this help message"
+    "-l    - Log in to your account",
+    "-s    - Send an encrypted message",
+    "-r    - Read your messages",
+    "-lo   - Log out of the session",
+    "-h     - Show this help message"
 ]
 
 def show_help():
@@ -33,14 +36,14 @@ def main():
         show_help()
         while True:
             cmd = input("primecipher> ").strip()
-            if cmd == "/send":
+            if cmd == "-s":
                 messaging.send_message()
-            elif cmd == "/read":
+            elif cmd == "-r":
                 messaging.read_messages()
-            elif cmd == "/logout":
+            elif cmd == "-lo":
                 print("Logging out...")
                 break
-            elif cmd == "/help":
+            elif cmd == "-h":
                 show_help()
             elif cmd == "":
                 continue
