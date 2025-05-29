@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>PrimeCipher Hacker Chat</title>
+    <style>
+        body {
+            background: #101010;
+            color: #00ff41;
+            font-family: 'Fira Mono', 'Consolas', 'Courier New', monospace;
+            margin: 0;
+            padding: 0;
+        }
+        #container {
+            max-width: 600px;
+            margin: 40px auto;
+            background: #181818;
+            border: 2px solid #00ff41;
+            border-radius: 10px;
+            box-shadow: 0 0 30px #00ff4160;
+            padding: 24px 24px 16px 24px;
+        }
+        h2 {
+            text-align: center;
+            color: #00ff41;
+            letter-spacing: 2px;
+            margin-bottom: 16px;
+            text-shadow: 0 0 8px #00ff41;
+        }
+        #chat {
+            width: 100%;
+            height: 300px;
+            background: #111;
+            overflow-y: auto;
+            padding: 12px;
+            border-radius: 6px;
+            border: 1px solid #00ff41;
+            margin-bottom: 16px;
+            font-size: 1.05em;
+        }
+        .msg {
+            margin: 6px 0;
+            word-break: break-word;
+        }
+        .sender {
+            color: #39ff14;
+            font-weight: bold;
+        }
+        #inputs {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 8px;
+        }
+        #name, #msg {
+            background: #222;
+            color: #00ff41;
+            border: 1px solid #00ff41;
+            border-radius: 4px;
+            padding: 8px;
+            font-size: 1em;
+            outline: none;
+        }
+        #name { width: 25%; }
+        #msg { width: 60%; }
+        #send {
+            background: #00ff41;
+            color: #181818;
+            border: none;
+            border-radius: 4px;
+            padding: 8px 18px;
+            font-weight: bold;
+            cursor: pointer;
+            font-family: inherit;
+            transition: background 0.2s;
+        }
+        #send:hover {
+            background: #39ff14;
+        }
+        #footer {
+            text-align: center;
+            color: #00ff41a0;
+            font-size: 0.9em;
+            margin-top: 12px;
+            letter-spacing: 1px;
+        }
+    </style>
+</head>
+<body>
+    <div id="container">
+        <h2>PrimeCipher Terminal</h2>
+        <div id="chat"></div>
+        <div id="inputs">
+            <input type="text" id="name" placeholder="Alias" autocomplete="off">
+            <input type="text" id="msg" placeholder="Type your message..." autocomplete="off">
+            <button id="send">SEND</button>
+        </div>
+        <div id="footer">Secure Hacker Chat &copy; PrimeCipher</div>
+    </div>
+    <script>
+        const chat = document.getElementById('chat');
+        const msgInput = document.getElementById('msg');
+        const sendBtn = document.getElementById('send');
+        const nameInput = document.getElementById('name');
+
+        function addMessage(obj) {
+            const div = document.createElement('div');
+            div.className = 'msg';
+            if (obj.sender && obj.message) {
+                div.innerHTML = `<span class="sender">${obj.sender}:</span> ${obj.message}`;
+            } else {
+                div.textContent = obj;
+            }
+            chat.appendChild(div);
+            chat.scrollTop = chat.scrollHeight;
+        }
+
+        function fetchMessages() {
+            fetch('http://localhost:5000/messages')
+                .then(res => res.json())
+                .then(data => {
+                    data.messages.forEach(addMessage);
+                })
+                .catch(() => addMessage('Could not connect to server.'));
+        }
+
+        sendBtn.onclick = () => {
+            const text = msgInput.value.trim();
+            const sender = nameInput.value.trim() || "Anonymous";
+            if (!text) return;
+            fetch('http://localhost:5000/send', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ sender: sender, message: text })
+            }).then(() => {
+                msgInput.value = '';
+                fetchMessages();
+            });
+        };
+
+        // Send message on Enter key
+        msgInput.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter') sendBtn.click();
+        });
+
+        // Fetch messages every 2 seconds
+        setInterval(fetchMessages, 2000);
+        fetchMessages();
+    </script>
+</body>
+</html>
+from flask_cors import CORS
+CORS(app)
